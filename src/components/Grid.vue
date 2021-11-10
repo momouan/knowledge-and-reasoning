@@ -75,15 +75,14 @@ export default {
 
     // });
    },
-   deplacerJoueur(){
-       query.execute(conn, 'proj_kr', 'delete { ?c a :CellPlayer. } insert { ?x a :CellPlayer} where { ?c a :CellPlayer. ?x a :IsWest. }', 
+   async deplacerJoueur(){
+       await query.execute(conn, 'proj_kr', 'delete { ?c a :CellPlayer. } insert { ?x a :CellPlayer} where { ?c a :CellPlayer. ?x a :IsWest. }', 
                   'application/sparql-results+json', {
       reasoning: true
     })
     for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
-                console.log(document.getElementById(i + '' + j))          
-                // console.log(i + '' + j)
+                document.getElementById(i + '' + j).textContent = null       
             }
         }
     this.init()
