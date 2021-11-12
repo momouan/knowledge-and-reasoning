@@ -6,7 +6,12 @@
     </div> -->
     <div class="container">
       <button @click="init()">INIT THE SHIT</button>
-      <button @click="deplacerJoueur()">Turn left</button>
+      <div>
+      <button id="up" @click="moveNorth()">Up</button>
+      <button id="down" @click="moveSouth()">Down</button>
+      <button id="right" @click="moveEast()">Right</button>
+      <button id="left" @click="moveWest()">Left </button>
+      </div>
     <table>
     <tr v-for="(i, ind1) in 10" :key="`i-${ind1}`" :id="`${i-1}`">
         <td v-for="(j, ind2) in 10" :key="`j-${ind2}`" :id="`${i-1}${ind2}`">   
@@ -32,7 +37,7 @@ export default {
   name: 'Grid',
   data(){
       return {
-        
+        direction: "IsEast",
     //       cellID: 1,
     //     grid: [
     //   {
@@ -75,8 +80,44 @@ export default {
 
     // });
    },
-   async deplacerJoueur(){
-       await query.execute(conn, 'proj_kr', 'delete { ?c a :CellPlayer. } insert { ?x a :CellPlayer} where { ?c a :CellPlayer. ?x a :IsWest. }', 
+   async moveSouth(){
+       await query.execute(conn, 'proj_kr', 'DELETE { ?c a :CellPlayer. ?ball a :Ball } INSERT { ?x a :CellPlayer. ?newBall a :Ball. }WHERE{{ ?c a :CellPlayer. ?x a :IsSouth. FILTER NOT EXISTS { ?x a :Ball .}} UNION { ?c a :CellPlayer. ?x a :IsSouth. ?ball a :IsSouth. ?ball a :Ball. ?ball :hasSouth ?newBall. ?newBall a :NotWall. }}', 
+                  'application/sparql-results+json', {
+      reasoning: true
+    })
+    for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                document.getElementById(i + '' + j).textContent = null       
+            }
+        }
+    this.init()
+    },
+   async moveNorth(){
+       await query.execute(conn, 'proj_kr', 'DELETE { ?c a :CellPlayer. ?ball a :Ball } INSERT { ?x a :CellPlayer. ?newBall a :Ball. }WHERE{{ ?c a :CellPlayer. ?x a :IsNorth. FILTER NOT EXISTS { ?x a :Ball .}} UNION { ?c a :CellPlayer. ?x a :IsNorth. ?ball a :IsNorth. ?ball a :Ball. ?ball :hasNorth ?newBall. ?newBall a :NotWall. }}', 
+                  'application/sparql-results+json', {
+      reasoning: true
+    })
+    for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                document.getElementById(i + '' + j).textContent = null       
+            }
+        }
+    this.init()
+    },
+   async moveEast(){
+       await query.execute(conn, 'proj_kr', 'DELETE { ?c a :CellPlayer. ?ball a :Ball } INSERT { ?x a :CellPlayer. ?newBall a :Ball. }WHERE{{ ?c a :CellPlayer. ?x a :IsEast. FILTER NOT EXISTS { ?x a :Ball .}} UNION { ?c a :CellPlayer. ?x a :IsEast. ?ball a :IsEast. ?ball a :Ball. ?ball :hasEast ?newBall. ?newBall a :NotWall. }}', 
+                  'application/sparql-results+json', {
+      reasoning: true
+    })
+    for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                document.getElementById(i + '' + j).textContent = null       
+            }
+        }
+    this.init()
+    },
+   async moveWest(){
+       await query.execute(conn, 'proj_kr', 'DELETE { ?c a :CellPlayer. ?ball a :Ball } INSERT { ?x a :CellPlayer. ?newBall a :Ball. }WHERE{{ ?c a :CellPlayer. ?x a :IsWest. FILTER NOT EXISTS { ?x a :Ball .}} UNION { ?c a :CellPlayer. ?x a :IsWest. ?ball a :IsWest. ?ball a :Ball. ?ball :hasWest ?newBall. ?newBall a :NotWall. }}', 
                   'application/sparql-results+json', {
       reasoning: true
     })
@@ -108,9 +149,27 @@ table {
 }
 table td {
     /* width: 30px; */
-    height: 80px;
+    height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     border: 2px solid;
+}
+#up {
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#down {
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#right {
+  width: 25%;
+  margin-right: auto;
+}
+#left {
+  width: 25%;
+  margin-left: auto;
 }
 </style>
