@@ -21,8 +21,7 @@ export default {
   name: 'Grid',
   data(){
       return {
-        ballType: "Small",
-        ballxy: "",
+        ball_type: "Small",
         north: "",
         south: "",
         est: "",
@@ -36,28 +35,13 @@ export default {
 
   },
   methods: {
-     init(){
-     query.execute(conn, 'proj_kr', 'SELECT ?c WHERE { ?c a :CellPlayer. }', 
-                  'application/sparql-results+json', {
-      reasoning: true
-    }).then(({ body }) => { 
-      body = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-      document.getElementById(body).textContent = "Player"
-    });
-    query.execute(conn, 'proj_kr', 'SELECT ?c WHERE {{ ?c a :Small. } UNION { ?c a :Medium } UNION { ?c a :Big }}',
-                  'application/sparql-results+json', {
-      reasoning: true
-    }).then(({ body }) => { 
-      console.log(body.results.bindings)
-      let small = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-      document.getElementById(small).textContent = "Small";
-      let medium = body.results.bindings[1].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-      document.getElementById(medium).textContent = "Medium";
-      let big = body.results.bindings[2].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-      document.getElementById(big).textContent = "Big";
-    });
+     async init(){
+       this.get_player()
+       this.get_balls()
+       //await this.get_surroundings()
+    
    },
-   re_init(){
+   async re_init(){
      for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 document.getElementById(i + '' + j).textContent = null       
@@ -66,20 +50,74 @@ export default {
     this.init()
    },
    async move(dir){
-       await query.execute(conn, 'proj_kr', `DELETE { ?c a :CellPlayer. ?ball a :`+ this.ballType +` } 
-                                             INSERT { ?x a :CellPlayer. ?newBall a :`+ this.ballType +`. }
+    await this.get_ball_type(dir)
+       await query.execute(conn, 'proj_kr', `DELETE { ?c a :CellPlayer. ?ball a :`+ this.ball_type +` } 
+                                             INSERT { ?x a :CellPlayer. ?newBall a :`+ this.ball_type +`. }
                                              WHERE{{ ?c a :CellPlayer. ?x a :Is`+dir+`. 
-                                                      FILTER NOT EXISTS { ?x a :`+ this.ballType +`.}} 
+                                                      FILTER NOT EXISTS { ?x a :`+ this.ball_type +`.}} 
                                                       UNION { ?c a :CellPlayer. 
                                                               ?x a :Is`+dir+`. 
                                                               ?ball a :Is`+dir+`. 
-                                                              ?ball a :`+ this.ballType +`. 
+                                                              ?ball a :`+ this.ball_type +`. 
                                                               ?ball :has`+dir+` ?newBall. 
                                                               ?newBall a :NotWall. }}`, 
                   'application/sparql-results+json', {
       reasoning: true
     })
     this.re_init()
+    },
+    // async get_surroundings(){
+    //   await query.execute(conn, 'proj_kr', `SELECT ?north ?south ?west ?east 
+    //                                         WHERE {{?c a :IsEast. ?c rdf:type ?east.
+    //                                                 ?east rdfs:subClassOf :Ball. MINUS{ VALUES (?east) { (:Ball)} }}
+    //                                         UNION { ?c a :IsWest. ?c rdf:type ?west.
+    //                                                 ?west rdfs:subClassOf :Ball. MINUS{ VALUES (?west) { (:Ball)} }}
+    //                                         UNION { ?c a :IsNorth. ?c rdf:type ?north. 
+    //                                                 ?north rdfs:subClassOf :Ball. MINUS{ VALUES (?north) { (:Ball)} }}
+    //                                         UNION { ?c a :IsSouth. ?c rdf:type ?south.
+    //                                                 ?south rdfs:subClassOf :Ball. MINUS{ VALUES (?south) { (:Ball)} }}}`,
+    //                 'application/sparql-results+json', {
+    //    reasoning: true
+    // }).then(({ body }) => { 
+    //   console.log(body.results.bindings)
+    //   this.north = this.south = this.est = this.west = "na"
+    //   if(body.results.bindings.length != 0){
+    //     console.log(body.results.bindings[0][0])
+    //     console.log("zzeb")
+    //     }
+    // });
+    // },
+    get_player(){
+        query.execute(conn, 'proj_kr', 'SELECT ?c WHERE { ?c a :CellPlayer. }', 
+                    'application/sparql-results+json', {
+        reasoning: true
+      }).then(({ body }) => { 
+        body = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+        document.getElementById(body).textContent = "Player"
+      });
+      },
+    get_balls(){
+        query.execute(conn, 'proj_kr', 'SELECT ?c WHERE {{ ?c a :Small. } UNION { ?c a :Medium } UNION { ?c a :Big }}',
+                    'application/sparql-results+json', {
+        reasoning: true
+      }).then(({ body }) => { 
+        console.log(body.results.bindings)
+        this.small = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+        document.getElementById(this.small).textContent = "Small";
+        this.medium = body.results.bindings[1].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+        document.getElementById(this.medium).textContent = "Medium";
+        this.big = body.results.bindings[2].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+        document.getElementById(this.big).textContent = "Big";
+      });
+    },
+    async get_ball_type(dir){
+      await query.execute(conn, 'proj_kr', `SELECT ?type WHERE {?c a :Is`+dir+`. ?c rdf:type ?type. ?type rdfs:subClassOf :Ball. MINUS{ VALUES (?type) { (:Ball)}}}`, 'application/sparql-results+json', {
+        reasoning: true
+      }).then(({ body }) => {
+        if(body.results.bindings.length != 0){
+          this.ball_type = body.results.bindings[0].type.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#", "");
+        }
+      });
     },
     }
 }
