@@ -1,0 +1,1305 @@
+@prefix : <http://www.semanticweb.org/djam/ontologies/2021/9/snowman#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/djam/ontologies/2021/9/snowman> .
+
+<http://www.semanticweb.org/djam/ontologies/2021/9/snowman> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#hasEast
+:hasEast rdf:type owl:ObjectProperty ;
+         rdfs:domain :NotWall ;
+         rdfs:range [ rdf:type owl:Class ;
+                      owl:unionOf ( :NotWall
+                                    :Wall
+                                  )
+                    ] .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#hasNorth
+:hasNorth rdf:type owl:ObjectProperty ;
+          rdfs:domain :NotWall ;
+          rdfs:range [ rdf:type owl:Class ;
+                       owl:unionOf ( :NotWall
+                                     :Wall
+                                   )
+                     ] .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#hasSouth
+:hasSouth rdf:type owl:ObjectProperty ;
+          rdfs:domain :NotWall ;
+          rdfs:range [ rdf:type owl:Class ;
+                       owl:unionOf ( :NotWall
+                                     :Wall
+                                   )
+                     ] .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#hasWest
+:hasWest rdf:type owl:ObjectProperty ;
+         rdfs:domain :NotWall ;
+         rdfs:range [ rdf:type owl:Class ;
+                      owl:unionOf ( :NotWall
+                                    :Wall
+                                  )
+                    ] .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#x
+:x rdf:type owl:DatatypeProperty ;
+   rdfs:domain :NotWall ;
+   rdfs:range xsd:int .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#y
+:y rdf:type owl:DatatypeProperty ;
+   rdfs:domain :NotWall ;
+   rdfs:range xsd:int .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Ball
+:Ball rdf:type owl:Class ;
+      rdfs:subClassOf :NotWall ;
+      owl:disjointWith :CellPlayer .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Big
+:Big rdf:type owl:Class ;
+     rdfs:subClassOf :Ball .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell
+:Cell rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#CellPlayer
+:CellPlayer rdf:type owl:Class ;
+            rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Combination
+:Combination rdf:type owl:Class ;
+             rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#IsEast
+:IsEast rdf:type owl:Class ;
+        owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty :hasWest ;
+                                                     owl:someValuesFrom :CellPlayer
+                                                   ]
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] ;
+        rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#IsNorth
+:IsNorth rdf:type owl:Class ;
+         owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty :hasSouth ;
+                                                      owl:someValuesFrom :CellPlayer
+                                                    ]
+                                                  ) ;
+                               rdf:type owl:Class
+                             ] ;
+         rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#IsSouth
+:IsSouth rdf:type owl:Class ;
+         owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty :hasNorth ;
+                                                      owl:someValuesFrom :CellPlayer
+                                                    ]
+                                                  ) ;
+                               rdf:type owl:Class
+                             ] ;
+         rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#IsWest
+:IsWest rdf:type owl:Class ;
+        owl:equivalentClass [ owl:intersectionOf ( :NotWall
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty :hasEast ;
+                                                     owl:someValuesFrom :CellPlayer
+                                                   ]
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] ;
+        rdfs:subClassOf :NotWall .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Medium
+:Medium rdf:type owl:Class ;
+        rdfs:subClassOf :Ball .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#MediumBig
+:MediumBig rdf:type owl:Class ;
+           rdfs:subClassOf :Combination .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#NotWall
+:NotWall rdf:type owl:Class ;
+         rdfs:subClassOf :Cell .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Small
+:Small rdf:type owl:Class ;
+       rdfs:subClassOf :Ball .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#SmallBig
+:SmallBig rdf:type owl:Class ;
+          rdfs:subClassOf :Combination .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#SmallMedium
+:SmallMedium rdf:type owl:Class ;
+             rdfs:subClassOf :Combination .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#SmallMediumBig
+:SmallMediumBig rdf:type owl:Class ;
+                rdfs:subClassOf :Combination .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Wall
+:Wall rdf:type owl:Class ;
+      rdfs:subClassOf :Cell .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell00
+:Cell00 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell01 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell10 ;
+        :hasWest :Wall ;
+        :x 0 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell01
+:Cell01 rdf:type owl:NamedIndividual ,
+                 :CellPlayer ,
+                 :NotWall ;
+        :hasEast :Cell02 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell11 ;
+        :hasWest :Cell00 ;
+        :x 0 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell02
+:Cell02 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell03 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell12 ;
+        :hasWest :Cell01 ;
+        :x 0 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell03
+:Cell03 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell04 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell13 ;
+        :hasWest :Cell02 ;
+        :x 0 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell04
+:Cell04 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell05 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell14 ;
+        :hasWest :Cell03 ;
+        :x 0 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell05
+:Cell05 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell06 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell15 ;
+        :hasWest :Cell04 ;
+        :x 0 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell06
+:Cell06 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell07 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell16 ;
+        :hasWest :Cell05 ;
+        :x 0 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell07
+:Cell07 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell08 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell17 ;
+        :hasWest :Cell06 ;
+        :x 0 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell08
+:Cell08 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell09 ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell18 ;
+        :hasWest :Cell07 ;
+        :x 0 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell09
+:Cell09 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Wall ;
+        :hasSouth :Cell19 ;
+        :hasWest :Cell08 ;
+        :x 0 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell10
+:Cell10 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell11 ;
+        :hasNorth :Cell00 ;
+        :hasSouth :Cell20 ;
+        :hasWest :Wall ;
+        :x 1 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell11
+:Cell11 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell12 ;
+        :hasNorth :Cell01 ;
+        :hasSouth :Cell21 ;
+        :hasWest :Cell10 ;
+        :x 1 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell12
+:Cell12 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell13 ;
+        :hasNorth :Cell02 ;
+        :hasSouth :Cell22 ;
+        :hasWest :Cell11 ;
+        :x 1 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell13
+:Cell13 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell14 ;
+        :hasNorth :Cell03 ;
+        :hasSouth :Cell23 ;
+        :hasWest :Cell12 ;
+        :x 1 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell14
+:Cell14 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell15 ;
+        :hasNorth :Cell04 ;
+        :hasSouth :Cell24 ;
+        :hasWest :Cell13 ;
+        :x 1 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell15
+:Cell15 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell16 ;
+        :hasNorth :Cell05 ;
+        :hasSouth :Cell25 ;
+        :hasWest :Cell14 ;
+        :x 1 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell16
+:Cell16 rdf:type owl:NamedIndividual ,
+                 :NotWall ,
+                 :Small ;
+        :hasEast :Cell17 ;
+        :hasNorth :Cell06 ;
+        :hasSouth :Cell26 ;
+        :hasWest :Cell15 ;
+        :x 1 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell17
+:Cell17 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell18 ;
+        :hasNorth :Cell07 ;
+        :hasSouth :Cell27 ;
+        :hasWest :Cell16 ;
+        :x 1 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell18
+:Cell18 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell19 ;
+        :hasNorth :Cell08 ;
+        :hasSouth :Cell28 ;
+        :hasWest :Cell17 ;
+        :x 1 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell19
+:Cell19 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell09 ;
+        :hasSouth :Cell29 ;
+        :hasWest :Cell18 ;
+        :x 1 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell20
+:Cell20 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell21 ;
+        :hasNorth :Cell10 ;
+        :hasSouth :Cell30 ;
+        :hasWest :Wall ;
+        :x 2 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell21
+:Cell21 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell22 ;
+        :hasNorth :Cell11 ;
+        :hasSouth :Cell31 ;
+        :hasWest :Cell20 ;
+        :x 2 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell22
+:Cell22 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell23 ;
+        :hasNorth :Cell12 ;
+        :hasSouth :Cell32 ;
+        :hasWest :Cell21 ;
+        :x 2 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell23
+:Cell23 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell24 ;
+        :hasNorth :Cell13 ;
+        :hasSouth :Cell33 ;
+        :hasWest :Cell22 ;
+        :x 2 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell24
+:Cell24 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell25 ;
+        :hasNorth :Cell14 ;
+        :hasSouth :Cell34 ;
+        :hasWest :Cell23 ;
+        :x 2 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell25
+:Cell25 rdf:type owl:NamedIndividual ,
+                 :Big ,
+                 :NotWall ;
+        :hasEast :Cell26 ;
+        :hasNorth :Cell15 ;
+        :hasSouth :Cell35 ;
+        :hasWest :Cell24 ;
+        :x 2 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell26
+:Cell26 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell27 ;
+        :hasNorth :Cell16 ;
+        :hasSouth :Cell36 ;
+        :hasWest :Cell25 ;
+        :x 2 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell27
+:Cell27 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell28 ;
+        :hasNorth :Cell17 ;
+        :hasSouth :Cell37 ;
+        :hasWest :Cell26 ;
+        :x 2 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell28
+:Cell28 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell29 ;
+        :hasNorth :Cell18 ;
+        :hasSouth :Cell38 ;
+        :hasWest :Cell27 ;
+        :x 2 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell29
+:Cell29 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell19 ;
+        :hasSouth :Cell39 ;
+        :hasWest :Cell28 ;
+        :x 2 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell30
+:Cell30 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell31 ;
+        :hasNorth :Cell20 ;
+        :hasSouth :Cell40 ;
+        :hasWest :Wall ;
+        :x 3 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell31
+:Cell31 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell32 ;
+        :hasNorth :Cell21 ;
+        :hasSouth :Cell41 ;
+        :hasWest :Cell30 ;
+        :x 3 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell32
+:Cell32 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell33 ;
+        :hasNorth :Cell22 ;
+        :hasSouth :Cell42 ;
+        :hasWest :Cell31 ;
+        :x 3 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell33
+:Cell33 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell34 ;
+        :hasNorth :Cell23 ;
+        :hasSouth :Cell43 ;
+        :hasWest :Cell32 ;
+        :x 3 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell34
+:Cell34 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell35 ;
+        :hasNorth :Cell24 ;
+        :hasSouth :Cell44 ;
+        :hasWest :Cell33 ;
+        :x 3 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell35
+:Cell35 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell36 ;
+        :hasNorth :Cell25 ;
+        :hasSouth :Cell45 ;
+        :hasWest :Cell34 ;
+        :x 3 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell36
+:Cell36 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell37 ;
+        :hasNorth :Cell26 ;
+        :hasSouth :Cell46 ;
+        :hasWest :Cell35 ;
+        :x 3 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell37
+:Cell37 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell38 ;
+        :hasNorth :Cell27 ;
+        :hasSouth :Cell47 ;
+        :hasWest :Cell36 ;
+        :x 3 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell38
+:Cell38 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell39 ;
+        :hasNorth :Cell28 ;
+        :hasSouth :Cell48 ;
+        :hasWest :Cell37 ;
+        :x 3 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell39
+:Cell39 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell29 ;
+        :hasSouth :Cell49 ;
+        :hasWest :Cell38 ;
+        :x 3 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell40
+:Cell40 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell41 ;
+        :hasNorth :Cell30 ;
+        :hasSouth :Cell50 ;
+        :hasWest :Wall ;
+        :x 4 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell41
+:Cell41 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell42 ;
+        :hasNorth :Cell31 ;
+        :hasSouth :Cell51 ;
+        :hasWest :Cell40 ;
+        :x 4 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell42
+:Cell42 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell43 ;
+        :hasNorth :Cell32 ;
+        :hasSouth :Cell52 ;
+        :hasWest :Cell41 ;
+        :x 4 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell43
+:Cell43 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell44 ;
+        :hasNorth :Cell33 ;
+        :hasSouth :Cell53 ;
+        :hasWest :Cell42 ;
+        :x 4 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell44
+:Cell44 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell45 ;
+        :hasNorth :Cell34 ;
+        :hasSouth :Cell54 ;
+        :hasWest :Cell43 ;
+        :x 4 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell45
+:Cell45 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell46 ;
+        :hasNorth :Cell35 ;
+        :hasSouth :Cell55 ;
+        :hasWest :Cell44 ;
+        :x 4 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell46
+:Cell46 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell47 ;
+        :hasNorth :Cell36 ;
+        :hasSouth :Cell56 ;
+        :hasWest :Cell45 ;
+        :x 4 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell47
+:Cell47 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell48 ;
+        :hasNorth :Cell37 ;
+        :hasSouth :Cell57 ;
+        :hasWest :Cell46 ;
+        :x 4 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell48
+:Cell48 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell49 ;
+        :hasNorth :Cell38 ;
+        :hasSouth :Cell58 ;
+        :hasWest :Cell47 ;
+        :x 4 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell49
+:Cell49 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell39 ;
+        :hasSouth :Cell59 ;
+        :hasWest :Cell48 ;
+        :x 4 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell50
+:Cell50 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell51 ;
+        :hasNorth :Cell40 ;
+        :hasSouth :Cell60 ;
+        :hasWest :Wall ;
+        :x 5 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell51
+:Cell51 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell52 ;
+        :hasNorth :Cell41 ;
+        :hasSouth :Cell61 ;
+        :hasWest :Cell50 ;
+        :x 5 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell52
+:Cell52 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell53 ;
+        :hasNorth :Cell42 ;
+        :hasSouth :Cell62 ;
+        :hasWest :Cell51 ;
+        :x 5 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell53
+:Cell53 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell54 ;
+        :hasNorth :Cell43 ;
+        :hasSouth :Cell63 ;
+        :hasWest :Cell52 ;
+        :x 5 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell54
+:Cell54 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell55 ;
+        :hasNorth :Cell44 ;
+        :hasSouth :Cell64 ;
+        :hasWest :Cell53 ;
+        :x 5 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell55
+:Cell55 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell56 ;
+        :hasNorth :Cell45 ;
+        :hasSouth :Cell65 ;
+        :hasWest :Cell54 ;
+        :x 5 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell56
+:Cell56 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell57 ;
+        :hasNorth :Cell46 ;
+        :hasSouth :Cell66 ;
+        :hasWest :Cell55 ;
+        :x 5 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell57
+:Cell57 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell58 ;
+        :hasNorth :Cell47 ;
+        :hasSouth :Cell67 ;
+        :hasWest :Cell56 ;
+        :x 5 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell58
+:Cell58 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell59 ;
+        :hasNorth :Cell48 ;
+        :hasSouth :Cell68 ;
+        :hasWest :Cell57 ;
+        :x 5 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell59
+:Cell59 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell49 ;
+        :hasSouth :Cell69 ;
+        :hasWest :Cell58 ;
+        :x 5 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell60
+:Cell60 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell61 ;
+        :hasNorth :Cell50 ;
+        :hasSouth :Cell70 ;
+        :hasWest :Wall ;
+        :x 6 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell61
+:Cell61 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell62 ;
+        :hasNorth :Cell51 ;
+        :hasSouth :Cell71 ;
+        :hasWest :Cell60 ;
+        :x 6 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell62
+:Cell62 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell63 ;
+        :hasNorth :Cell52 ;
+        :hasSouth :Cell72 ;
+        :hasWest :Cell61 ;
+        :x 6 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell63
+:Cell63 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell64 ;
+        :hasNorth :Cell53 ;
+        :hasSouth :Cell73 ;
+        :hasWest :Cell62 ;
+        :x 6 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell64
+:Cell64 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell65 ;
+        :hasNorth :Cell54 ;
+        :hasSouth :Cell74 ;
+        :hasWest :Cell63 ;
+        :x 6 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell65
+:Cell65 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell66 ;
+        :hasNorth :Cell55 ;
+        :hasSouth :Cell75 ;
+        :hasWest :Cell64 ;
+        :x 6 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell66
+:Cell66 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell67 ;
+        :hasNorth :Cell56 ;
+        :hasSouth :Cell76 ;
+        :hasWest :Cell65 ;
+        :x 6 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell67
+:Cell67 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell68 ;
+        :hasNorth :Cell57 ;
+        :hasSouth :Cell77 ;
+        :hasWest :Cell66 ;
+        :x 6 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell68
+:Cell68 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell69 ;
+        :hasNorth :Cell58 ;
+        :hasSouth :Cell78 ;
+        :hasWest :Cell67 ;
+        :x 6 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell69
+:Cell69 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell59 ;
+        :hasSouth :Cell79 ;
+        :hasWest :Cell68 ;
+        :x 6 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell70
+:Cell70 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell71 ;
+        :hasNorth :Cell60 ;
+        :hasSouth :Cell80 ;
+        :hasWest :Wall ;
+        :x 7 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell71
+:Cell71 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell72 ;
+        :hasNorth :Cell61 ;
+        :hasSouth :Cell81 ;
+        :hasWest :Cell70 ;
+        :x 7 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell72
+:Cell72 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell73 ;
+        :hasNorth :Cell62 ;
+        :hasSouth :Cell82 ;
+        :hasWest :Cell71 ;
+        :x 7 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell73
+:Cell73 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell74 ;
+        :hasNorth :Cell63 ;
+        :hasSouth :Cell83 ;
+        :hasWest :Cell72 ;
+        :x 7 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell74
+:Cell74 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell75 ;
+        :hasNorth :Cell64 ;
+        :hasSouth :Cell84 ;
+        :hasWest :Cell73 ;
+        :x 7 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell75
+:Cell75 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell76 ;
+        :hasNorth :Cell65 ;
+        :hasSouth :Cell85 ;
+        :hasWest :Cell74 ;
+        :x 7 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell76
+:Cell76 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell77 ;
+        :hasNorth :Cell66 ;
+        :hasSouth :Cell86 ;
+        :hasWest :Cell75 ;
+        :x 7 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell77
+:Cell77 rdf:type owl:NamedIndividual ,
+                 :Medium ,
+                 :NotWall ;
+        :hasEast :Cell78 ;
+        :hasNorth :Cell67 ;
+        :hasSouth :Cell87 ;
+        :hasWest :Cell76 ;
+        :x 7 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell78
+:Cell78 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell79 ;
+        :hasNorth :Cell68 ;
+        :hasSouth :Cell88 ;
+        :hasWest :Cell77 ;
+        :x 7 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell79
+:Cell79 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell69 ;
+        :hasSouth :Cell89 ;
+        :hasWest :Cell78 ;
+        :x 7 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell80
+:Cell80 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell81 ;
+        :hasNorth :Cell70 ;
+        :hasSouth :Cell90 ;
+        :hasWest :Wall ;
+        :x 8 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell81
+:Cell81 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell82 ;
+        :hasNorth :Cell71 ;
+        :hasSouth :Cell91 ;
+        :hasWest :Cell80 ;
+        :x 8 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell82
+:Cell82 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell83 ;
+        :hasNorth :Cell72 ;
+        :hasSouth :Cell92 ;
+        :hasWest :Cell81 ;
+        :x 8 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell83
+:Cell83 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell84 ;
+        :hasNorth :Cell73 ;
+        :hasSouth :Cell93 ;
+        :hasWest :Cell82 ;
+        :x 8 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell84
+:Cell84 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell85 ;
+        :hasNorth :Cell74 ;
+        :hasSouth :Cell94 ;
+        :hasWest :Cell83 ;
+        :x 8 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell85
+:Cell85 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell86 ;
+        :hasNorth :Cell75 ;
+        :hasSouth :Cell95 ;
+        :hasWest :Cell84 ;
+        :x 8 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell86
+:Cell86 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell87 ;
+        :hasNorth :Cell76 ;
+        :hasSouth :Cell96 ;
+        :hasWest :Cell85 ;
+        :x 8 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell87
+:Cell87 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell88 ;
+        :hasNorth :Cell77 ;
+        :hasSouth :Cell97 ;
+        :hasWest :Cell86 ;
+        :x 8 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell88
+:Cell88 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell89 ;
+        :hasNorth :Cell78 ;
+        :hasSouth :Cell98 ;
+        :hasWest :Cell87 ;
+        :x 8 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell89
+:Cell89 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell79 ;
+        :hasSouth :Cell99 ;
+        :hasWest :Cell88 ;
+        :x 8 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell90
+:Cell90 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell91 ;
+        :hasNorth :Cell80 ;
+        :hasSouth :Wall ;
+        :hasWest :Wall ;
+        :x 9 ;
+        :y 0 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell91
+:Cell91 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell92 ;
+        :hasNorth :Cell81 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell90 ;
+        :x 9 ;
+        :y 1 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell92
+:Cell92 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell93 ;
+        :hasNorth :Cell82 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell91 ;
+        :x 9 ;
+        :y 2 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell93
+:Cell93 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell94 ;
+        :hasNorth :Cell83 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell92 ;
+        :x 9 ;
+        :y 3 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell94
+:Cell94 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell95 ;
+        :hasNorth :Cell84 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell93 ;
+        :x 9 ;
+        :y 4 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell95
+:Cell95 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell96 ;
+        :hasNorth :Cell85 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell94 ;
+        :x 9 ;
+        :y 5 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell96
+:Cell96 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell97 ;
+        :hasNorth :Cell86 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell95 ;
+        :x 9 ;
+        :y 6 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell97
+:Cell97 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell98 ;
+        :hasNorth :Cell87 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell96 ;
+        :x 9 ;
+        :y 7 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell98
+:Cell98 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Cell99 ;
+        :hasNorth :Cell88 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell97 ;
+        :x 9 ;
+        :y 8 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell99
+:Cell99 rdf:type owl:NamedIndividual ,
+                 :NotWall ;
+        :hasEast :Wall ;
+        :hasNorth :Cell89 ;
+        :hasSouth :Wall ;
+        :hasWest :Cell98 ;
+        :x 9 ;
+        :y 9 .
+
+
+###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Wall
+:Wall rdf:type owl:NamedIndividual ,
+               :Wall .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
