@@ -77,7 +77,7 @@ export default {
       reasoning: true
     });
     await this.check_combination(dir)
-    this.re_init()
+    await this.re_init()
     },
     async get_player(){
         await query.execute(conn, 'proj_kr', 'SELECT ?c WHERE { ?c a :CellPlayer. }', 
@@ -152,6 +152,7 @@ export default {
               });
               this.combination.sort();
               this.combination.reverse();
+              this.sleep(200);
               this.make_combination(dir);
           }
         });
@@ -169,6 +170,7 @@ export default {
           this.combination.push(body.results.bindings[0].type.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#", ""));
           this.combination.sort();
           this.combination.reverse();
+          this.sleep(200);
           this.make_combination(dir);
          }
        });
@@ -203,6 +205,9 @@ export default {
         else if(this.combination.length == 3)
           document.getElementById(this.combination_cell).textContent = "SMB";
       });
+    },
+    sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
     } 
    }, 
 }
