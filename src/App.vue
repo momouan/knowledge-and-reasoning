@@ -1,5 +1,5 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+   <!-- <img alt="Vue logo" src="./assets/player.png">  -->
   <!-- <Grid msg="Welcome to Your Vue.js App"/> -->
   <Grid/>
 </template>
