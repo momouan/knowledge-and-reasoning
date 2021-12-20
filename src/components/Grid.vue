@@ -21,7 +21,8 @@ export default {
   data(){
       return {
         ball_type: "",
-        combination: [],
+        combination: ["Small", "Big"],
+        cap_move: "",
         combination_cell: "",
         player: "",
         small: "",
@@ -62,22 +63,27 @@ export default {
     await this.init()
    },
    async move(dir){
-    await this.get_ball_type(dir)
-       await query.execute(conn, 'proj_kr', `DELETE { ?c a :CellPlayer. ?ball a :`+ this.ball_type +` } 
-                                             INSERT { ?x a :CellPlayer. ?newBall a :`+ this.ball_type +`. }
-                                             WHERE{{ ?c a :CellPlayer. ?x a :Is`+dir+`. 
-                                                      FILTER NOT EXISTS { ?x a :`+ this.ball_type +`.}} 
-                                                      UNION { ?c a :CellPlayer. 
-                                                              ?x a :Is`+dir+`. 
-                                                              ?ball a :Is`+dir+`. 
-                                                              ?ball a :`+ this.ball_type +`. 
-                                                              ?ball :has`+dir+` ?newBall. 
-                                                              ?newBall a :NotWall. }}`, 
-                  'application/sparql-results+json', {
-      reasoning: true
-    });
-    await this.check_combination(dir)
-    await this.re_init()
+     await this.is_combination(dir)
+     if(this.cap_move){
+      await this.get_ball_type(dir)
+        await query.execute(conn, 'proj_kr', `DELETE { ?c a :CellPlayer. ?ball a :`+ this.ball_type +` } 
+                                              INSERT { ?x a :CellPlayer. ?newBall a :`+ this.ball_type +`. }
+                                              WHERE{{ ?c a :CellPlayer. ?x a :Is`+dir+`. 
+                                                        FILTER NOT EXISTS { ?x a :`+ this.ball_type +`.}} 
+                                                        UNION { ?c a :CellPlayer. 
+                                                                ?x a :Is`+dir+`. 
+                                                                ?ball a :Is`+dir+`. 
+                                                                ?ball a :`+ this.ball_type +`. 
+                                                                ?ball :has`+dir+` ?newBall. 
+                                                                ?newBall a :NotWall. }}`, 
+                    'application/sparql-results+json', {
+        reasoning: true
+      });
+      await this.check_combination(dir)
+      await this.re_init()
+      }
+      else
+        this.dont_move()
     },
     async get_player(){
         await query.execute(conn, 'proj_kr', 'SELECT ?c WHERE { ?c a :CellPlayer. }', 
@@ -102,7 +108,11 @@ export default {
       });
     },
     async get_ball_type(dir){ 
-      await query.execute(conn, 'proj_kr', `SELECT ?type WHERE {?c a :Is`+dir+`. ?c a ?type. ?type rdfs:subClassOf :Ball. MINUS{ VALUES (?type) { (:Ball)}}}`, 'application/sparql-results+json', {
+      await query.execute(conn, 'proj_kr', `SELECT ?type 
+                                            WHERE { ?c a :Is`+dir+`. 
+                                                    ?c a ?type. 
+                                                    ?type rdfs:subClassOf :Ball. MINUS{ VALUES (?type) { (:Ball)}}}`, 
+                    'application/sparql-results+json', {
         reasoning: true
       }).then(({ body }) => {
         if(body.results.bindings.length != 0)
@@ -156,7 +166,7 @@ export default {
               this.make_combination(dir);
           }
         });
-        }
+      }
       else if(this.combination.length == 2){
         await query.execute(conn, 'proj_kr', `SELECT ?type
                                               WHERE {
@@ -176,7 +186,7 @@ export default {
        });
       }
     },
-      async make_combination(dir){
+    async make_combination(dir){
           if(this.combination.length == 2){
               await query.execute(conn, 'proj_kr', `DELETE { ?c a :Ball, :`+this.combination[0]+`, :`+this.combination[1]+`.} 
                                               INSERT { ?c a :`+this.combination[0]+this.combination[1]+`.}
@@ -208,7 +218,20 @@ export default {
     },
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
-    } 
+    },
+    async dont_move(){  
+    },
+    async is_combination(dir){
+      await query.execute(conn, 'proj_kr', `SELECT ?c WHERE { ?c a :Is`+dir+`. ?c a :Combination. }`,
+                    'application/sparql-results+json', {
+        reasoning: true
+      }).then(({ body }) => {
+        if(body.results.bindings.length > 0)
+          this.cap_move = false 
+        else
+          this.cap_move = true
+      });
+    },
    }, 
 }
 const conn = new Connection({
