@@ -3,10 +3,10 @@
       <button @click="init()">INIT THE SHIT</button>
       <button @click="re_init()">RE-INIT THE SHIT</button>
       <div>
-      <button id="up" @click="move('North')">Up</button>
-      <button id="down" @click="move('South')">Down</button>
-      <button id="right" @click="move('East')">Right</button>
-      <button id="left" @click="move('West')">Left </button>
+      <button id="up" @click="move_or_not('North')">Up</button>
+      <button id="down" @click="move_or_not('South')">Down</button>
+      <button id="right" @click="move_or_not('East')">Right</button>
+      <button id="left" @click="move_or_not('West')">Left </button>
       </div>
     <table>
     <tr v-for="(i, ind1) in 10" :key="`i-${ind1}`" :id="`${i-1}`">
@@ -22,7 +22,9 @@ export default {
   data(){
       return {
         ball_type: "",
+        next_ball_type: "",
         combination: [],
+        next_combination_type: "",
         cap_move: "",
         combination_cell: "",
         player: "",
@@ -64,7 +66,7 @@ export default {
     await this.init()
    },
    async re_init(){
-     await query.execute(conn, 'proj_kr', `DELETE {?a a :CellPlayer; a :Small; a :Medium; a :Big; a :SmallMedium; a :SmallBig; a :MediumBig; a :SmallMediumBig}
+     await query.execute(conn, 'proj_kr', `DELETE {?a a :CellPlayer; a :Small; a :Medium; a :Big; a :SmallMedium; a :SmallBig; a :MediumBig; a :SmallMediumBig; a :Combination}
                                            WHERE  { ?a a :Cell. }`, 
                     'application/sparql-results+json', {
         reasoning: true
@@ -78,9 +80,6 @@ export default {
       await this.update_grid()
    },
    async move(dir){
-     await this.is_combination(dir)
-     if(this.cap_move){
-      await this.get_ball_type(dir)
         await query.execute(conn, 'proj_kr', `DELETE { ?c a :CellPlayer. ?ball a :`+ this.ball_type +` } 
                                               INSERT { ?x a :CellPlayer. ?newBall a :`+ this.ball_type +`. }
                                               WHERE{{ ?c a :CellPlayer. ?x a :Is`+dir+`. 
@@ -96,9 +95,58 @@ export default {
       });
       await this.check_combination(dir)
       await this.update_grid()
+      if(this.combination.length == 3)
+        alert("game completed, reset to play again!")
+    },
+    async move_or_not(dir){
+      await this.is_combination(dir)
+      if(this.cap_move){
+        await this.get_ball_type(dir)
+        await this.isnext_cell_ball(dir)
+        await this.isnext_cell_combination(dir)
+        if((this.ball_type == "Big" && this.next_ball_type != "na") || (this.ball_type == "Medium" && this.next_ball_type == "Small") 
+              || this.next_combination_type == "SmallBig" || this.next_combination_type == "SmallMedium" )
+          this.dont_move()
+        else
+          this.move(dir)
       }
-      else
+      else{
         this.dont_move()
+      }
+    },
+    async isnext_cell_ball(dir){
+      await query.execute(conn, 'proj_kr', `SELECT ?type
+                                            WHERE { ?c a :Is`+dir+`. 
+                                                    ?c :has`+dir+` ?x. 
+                                                    ?x a ?type. 
+                                                    ?type rdfs:subClassOf :Ball. 
+                                                    ?type rdfs:subClassOf :Ball. MINUS{ VALUES (?type) { (:Ball)}}}`,
+                    'application/sparql-results+json', {
+        reasoning: true
+      }).then(({ body }) => {
+        if(body.results.bindings.length > 0){
+          this.next_ball_type = body.results.bindings[0].type.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#", "");
+        }
+        else
+          this.next_ball_type = "na"
+      });
+    },
+    async isnext_cell_combination(dir){
+      await query.execute(conn, 'proj_kr', `SELECT ?type
+                                            WHERE { ?c a :Is`+dir+`.
+                                                    ?c :has`+dir+` ?x. 
+                                                    ?x a ?type. 
+                                                    ?type rdfs:subClassOf :Combination. 
+                                                    ?type rdfs:subClassOf :Combination. MINUS{ VALUES (?type) { (:Combination)}}}`,
+                      'application/sparql-results+json', {
+         reasoning: true               
+      }).then(({ body }) => {
+        if(body.results.bindings.length > 0){
+          this.next_combination_type = body.results.bindings[0].type.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#", "");
+        }
+        else 
+          this.next_combination_type = "na"
+      });
     },
     async get_player(){
         await query.execute(conn, 'proj_kr', 'SELECT ?c WHERE { ?c a :CellPlayer. }', 
@@ -177,7 +225,7 @@ export default {
               });
               this.combination.sort();
               this.combination.reverse();
-              this.sleep(200);
+              this.sleep(500);
               this.make_combination(dir);
           }
         });
@@ -195,7 +243,7 @@ export default {
           this.combination.push(body.results.bindings[0].type.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#", ""));
           this.combination.sort();
           this.combination.reverse();
-          this.sleep(200);
+          this.sleep(500);
           this.make_combination(dir);
          }
        });
@@ -204,15 +252,15 @@ export default {
     async make_combination(dir){
           if(this.combination.length == 2){
               await query.execute(conn, 'proj_kr', `DELETE { ?c a :Ball, :`+this.combination[0]+`, :`+this.combination[1]+`.} 
-                                              INSERT { ?c a :`+this.combination[0]+this.combination[1]+`.}
+                                              INSERT { ?c a :Combination. ?c a :`+this.combination[0]+this.combination[1]+`.}
                                               WHERE  { ?c a :Is`+dir+`. }`,
                        'application/sparql-results+json', {
                  reasoning: true        
                        });
             }
-            else if(this.combination.length == 3){
+          else if(this.combination.length == 3){
               await query.execute(conn, 'proj_kr', `DELETE { ?c a :Ball, :`+this.combination[0]+`, :`+this.combination[1]+`, :`+this.combination[2]+`.} 
-                                              INSERT { ?c a :`+this.combination[0]+this.combination[1]+this.combination[2]+`.}
+                                              INSERT { ?c a :Combination. ?c a :`+this.combination[0]+this.combination[1]+this.combination[2]+`.}
                                               WHERE  { ?c a :Is`+dir+`. }`,
                        'application/sparql-results+json', {
                  reasoning: true        
@@ -224,6 +272,8 @@ export default {
                     'application/sparql-results+json', {
         reasoning: true
       }).then(({ body }) => {
+        if(body.results.bindings.length == 0)
+          this.update_grid()
         this.combination_cell = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
         if(this.combination.length == 2)
           document.getElementById(this.combination_cell).textContent = ""+this.combination[0]+this.combination[1]+"";
