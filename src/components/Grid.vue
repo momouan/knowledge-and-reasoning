@@ -14,6 +14,7 @@
     </tr>
     </table>
     </div>
+    <div id="mmok"></div>
 </template>
 <script>
 const { Connection, query } = require('stardog');
@@ -31,6 +32,14 @@ export default {
         small: "",
         medium: "",
         big: "",
+        player_img: require('../assets/images/Player.png'),
+        small_img: require('../assets/images/Small.png'),
+        medium_img: require('../assets/images/Medium.png'),
+        big_img: require('../assets/images/Big.png'),
+        small_medium_img: require('../assets/images/SmallMedium.png'),
+        small_big_img: require('../assets/images/SmallBig.png'),
+        medium_big_img: require('../assets/images/MediumBig.png'),
+        small_medium_big_img: require('../assets/images/SmallMediumBig.png'),
       }
   },
   props: {
@@ -60,7 +69,7 @@ export default {
    async update_grid(){
      for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
-                document.getElementById(i + '' + j).textContent = null       
+                document.getElementById(i + '' + j).innerHTML = ''       
             }
         }
     await this.init()
@@ -156,25 +165,35 @@ export default {
         reasoning: true
       }).then(({ body }) => { 
         this.player = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        // var img = document.createElement("img");
-        // img.setAttribute("src", "'../assets/images/Player.png'")
-        // img.setAttribute("alt", "Player")
-        // document.getElementById(this.player).appendChild(img)
-        document.getElementById(this.player).textContent = "Player"
+        var img = document.createElement("img");
+        img.src = this.player_img
+        img.alt = "Player"
+        document.getElementById(this.player).appendChild(img)
       });
       },
     async get_balls(){
-        await query.execute(conn, 'proj_kr', 'SELECT ?small ?medium ?big WHERE {{ ?small a :Small. } UNION { ?medium a :Medium } UNION { ?big a :Big }}',
-                    'application/sparql-results+json', {
-        reasoning: true
-      }).then(({ body }) => {
-        this.small = body.results.bindings[0].small.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        document.getElementById(this.small).textContent = "Small";
-        this.medium = body.results.bindings[1].medium.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        document.getElementById(this.medium).textContent = "Medium";
-        this.big = body.results.bindings[2].big.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        document.getElementById(this.big).textContent = "Big";
-      });
+      //   await query.execute(conn, 'proj_kr', 'SELECT ?small ?medium ?big WHERE {{ ?small a :Small. } UNION { ?medium a :Medium } UNION { ?big a :Big }}',
+      //               'application/sparql-results+json', {
+      //   reasoning: true
+      // }).then(({ body }) => {
+      //   this.small = body.results.bindings[0].small.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+      //   var img = document.createElement("img");
+      //   img.src = this.small_img
+      //   img.alt = "Small"
+      //   document.getElementById(this.small).appendChild(img)
+      //   // document.getElementById(this.small).textContent = "Small";
+      //   this.medium = body.results.bindings[1].medium.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+      //   img.src = this.medium_img
+      //   document.getElementById(this.medium).appendChild(img)
+      //   // document.getElementById(this.medium).textContent = "Medium";
+      //   this.big = body.results.bindings[2].big.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+      //   img.src = this.big_img
+      //   document.getElementById(this.big).appendChild(img)
+      //   // document.getElementById(this.big).textContent = "Big";
+      // });
+      this.get_small()
+      this.get_medium()
+      this.get_big()
     },
     async get_ball_type(dir){ 
       await query.execute(conn, 'proj_kr', `SELECT ?type 
@@ -196,7 +215,11 @@ export default {
         reasoning: true
       }).then(({ body }) => {
         this.small = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        document.getElementById(this.small).textContent = "Small";
+        var img = document.createElement("img");
+        img.src = this.small_img
+        img.alt = "Small"
+        document.getElementById(this.small).appendChild(img)
+        // document.getElementById(this.small).textContent = "Small";
       });
     },
     get_medium(){
@@ -205,7 +228,11 @@ export default {
         reasoning: true
       }).then(({ body }) => {
         this.medium = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        document.getElementById(this.medium).textContent = "Medium";
+        var img = document.createElement("img");
+        img.src = this.medium_img
+        img.alt = "Medium"
+        document.getElementById(this.medium).appendChild(img)
+        // document.getElementById(this.medium).textContent = "Medium";
       });
     },
     get_big(){
@@ -214,7 +241,11 @@ export default {
         reasoning: true
       }).then(({ body }) => {
         this.big = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        document.getElementById(this.big).textContent = "Big";
+        var img = document.createElement("img");
+        img.src = this.big_img
+        img.alt = "Big"
+        document.getElementById(this.big).appendChild(img)
+        // document.getElementById(this.big).textContent = "Big";
       });
     },
     async check_combination(dir){
@@ -281,10 +312,33 @@ export default {
         if(body.results.bindings.length == 0)
           this.update_grid()
         this.combination_cell = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
-        if(this.combination.length == 2)
-          document.getElementById(this.combination_cell).textContent = ""+this.combination[0]+this.combination[1]+"";
-        else if(this.combination.length == 3)
-          document.getElementById(this.combination_cell).textContent = "SMB";
+        var img = document.createElement("img");
+        if(this.combination.length == 2){
+          var str = ""+this.combination[0]+this.combination[1]+"";
+          switch(str){
+            case "SmallMedium":
+              img.src = this.small_medium_img
+              img.alt = "SmallMedium"
+              document.getElementById(this.combination_cell).appendChild(img)
+              break;
+            case "SmallBig":
+              img.src = this.small_big_img
+              img.alt = "SmallBig"
+              document.getElementById(this.combination_cell).appendChild(img)
+              break;
+            case "MediumBig":
+              img.src = this.medium_big_img
+              img.alt = "MediumBig"
+              document.getElementById(this.combination_cell).appendChild(img)
+              break;
+          }
+        }
+        else if(this.combination.length == 3){
+            img.src = this.small_medium_big_img
+            img.alt = "SmallMediumBig"
+            document.getElementById(this.combination_cell).appendChild(img)
+          // document.getElementById(this.combination_cell).textContent = "SMB";
+        }
       });
     },
     sleep(ms) {
@@ -330,6 +384,10 @@ table td {
     overflow: hidden;
     text-overflow: ellipsis;
     border: 2px solid;
+}
+img {
+  height: 48px;
+  width: 40px;
 }
 #up {
   width: 25%;
