@@ -95,8 +95,10 @@ export default {
       });
       await this.check_combination(dir)
       await this.update_grid()
-      if(this.combination.length == 3)
-        alert("game completed, reset to play again!")
+      if(this.combination.length == 3){
+        alert("game completed, click 'OK' to play again!")
+        this.re_init()
+      }
     },
     async move_or_not(dir){
       await this.is_combination(dir)
@@ -154,6 +156,10 @@ export default {
         reasoning: true
       }).then(({ body }) => { 
         this.player = body.results.bindings[0].c.value.replace("http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell", "");
+        // var img = document.createElement("img");
+        // img.setAttribute("src", "'../assets/images/Player.png'")
+        // img.setAttribute("alt", "Player")
+        // document.getElementById(this.player).appendChild(img)
         document.getElementById(this.player).textContent = "Player"
       });
       },
