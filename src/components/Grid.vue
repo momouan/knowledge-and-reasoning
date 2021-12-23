@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     async init(){
+        this.clear_grid()
         await this.get_player()
         if(this.combination.length == 3){
           await this.get_combination();
@@ -66,12 +67,15 @@ export default {
           await this.get_balls()
    },
    async update_grid(){
+    this.clear_grid()
+    await this.init()
+   },
+   clear_grid(){
      for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 document.getElementById(i + '' + j).innerHTML = ''       
             }
         }
-    await this.init()
    },
    async re_init(){
      await query.execute(conn, 'proj_kr', `DELETE {?a a :CellPlayer; a :Small; a :Medium; a :Big; a :SmallMedium; a :SmallBig; a :MediumBig; a :SmallMediumBig; a :Combination}
@@ -79,8 +83,8 @@ export default {
                     'application/sparql-results+json', {
         reasoning: true
       });
-      await query.execute(conn, 'proj_kr', `INSERT { :Cell01 a :CellPlayer. :Cell16 a :Small. :Cell83 a :Medium. :Cell25 a :Big}
-                                            WHERE  { :Cell01 a :Cell. :Cell16 a :Cell. :Cell83 a :Cell. :Cell25 a :Cell. }`, 
+      await query.execute(conn, 'proj_kr', `INSERT { :Cell01 a :CellPlayer. :Cell16 a :Small. :Cell33 a :Medium. :Cell25 a :Big}
+                                            WHERE  { :Cell01 a :Cell. :Cell16 a :Cell. :Cell33 a :Cell. :Cell25 a :Cell. }`, 
                     'application/sparql-results+json', {
         reasoning: true
       });
