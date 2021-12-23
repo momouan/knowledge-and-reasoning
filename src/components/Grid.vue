@@ -386,8 +386,8 @@ table td {
     border: 2px solid;
 }
 img {
-  height: 48px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
 }
 #up {
   width: 25%;
