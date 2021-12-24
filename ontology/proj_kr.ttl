@@ -560,6 +560,7 @@
 
 ###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell33
 :Cell33 rdf:type owl:NamedIndividual ,
+                 :Medium ,
                  :NotWall ;
         :hasEast :Cell34 ;
         :hasNorth :Cell23 ;
@@ -1110,7 +1111,6 @@
 
 ###  http://www.semanticweb.org/djam/ontologies/2021/9/snowman#Cell83
 :Cell83 rdf:type owl:NamedIndividual ,
-                 :Medium ,
                  :NotWall ;
         :hasEast :Cell84 ;
         :hasNorth :Cell73 ;

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-      <button @click="init()">INIT THE SHIT</button>
-      <button @click="re_init()">RE-INIT THE SHIT</button>
+      <!-- <button @click="init()">INIT THE SHIT</button> -->
+      <button @click="re_init()">(RE)START</button>
       <div>
       <button id="up" @click="move_or_not('North')">Up</button>
       <button id="down" @click="move_or_not('South')">Down</button>
@@ -374,12 +374,12 @@ table td {
   height: 20px;
 }
 #medium{
-  width: 50px;
-  height: 30px;
-}
-#big{
   width: 60px;
   height: 40px;
+}
+#big{
+  width: 80px;
+  height: 45px;
 }
 #up {
   width: 25%;
