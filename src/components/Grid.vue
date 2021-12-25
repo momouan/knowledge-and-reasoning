@@ -9,7 +9,7 @@
     <table id="controls">
       <tr>
         <td></td>
-        <td><button id="start" @click="re_init()">(RE)START</button></td>
+        <td><button id="start" @click="re_init()">(RE) START</button></td>
         <td></td>
       </tr>
       <tr>
@@ -530,20 +530,4 @@ const conn = new Connection({
 p {
   font-size: 12px;
 }
-/* #up {
-  width: 10%;
-}
-#down {
-  width: 25%;
-  margin-left: auto;
-  margin-right: auto;
-}
-#right {
-  width: 25%;
-  margin-right: auto;
-}
-#left {
-  width: 25%;
-  margin-left: auto; */
-/* } */
 </style>
