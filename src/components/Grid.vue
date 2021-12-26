@@ -169,8 +169,9 @@ export default {
           conn,
           "proj_kr",
           `SELECT ?type
-           WHERE { ?c a :Next` + dir + `.  
-                   ?c a ?type.  
+           WHERE { ?c a :Is` + dir + `.
+                   ?c :has`+ dir +` ?x.  
+                   ?x a ?type.  
                   {?type rdfs:subClassOf :Ball} 
                   UNION {?type rdfs:subClassOf :Combination} 
                   MINUS{ VALUES (?type) { (:Ball) (:Combination)}}}`,
