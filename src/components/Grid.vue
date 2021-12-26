@@ -46,9 +46,8 @@ export default {
   data() {
     return {
       ball_type: "",
-      next_ball_type: "",
       combination: [],
-      next_combination_type: "",
+      next_cell_type: "",
       cap_move: "",
       combination_cell: "",
       player: "",
@@ -151,13 +150,12 @@ export default {
       await this.is_combination(dir);
       if (this.cap_move) {
         await this.get_ball_type(dir);
-        await this.isnext_cell_ball(dir);
-        await this.isnext_cell_combination(dir);
+        await this.isnext_cell_type(dir);
         if (
-          (this.ball_type == "Big" && this.next_ball_type != "na") ||
-          (this.ball_type == "Medium" && this.next_ball_type == "Small") ||
-          this.next_combination_type == "SmallBig" ||
-          this.next_combination_type == "SmallMedium"
+          (this.ball_type == "Big" && this.next_cell_type != "na") ||
+          (this.ball_type == "Medium" && this.next_cell_type == "Small") ||
+          this.next_cell_type == "SmallBig" ||
+          this.next_cell_type == "SmallMedium"
         )
           this.dont_move();
         else this.move(dir);
@@ -165,17 +163,17 @@ export default {
         this.dont_move();
       }
     },
-    async isnext_cell_ball(dir) {
+    async isnext_cell_type(dir) {
       await query
         .execute(
           conn,
           "proj_kr",
           `SELECT ?type
-           WHERE { ?c a :Is` + dir + `. 
-                   ?c :has` + dir +` ?x. 
-                   ?x a ?type. 
-                   ?type rdfs:subClassOf :Ball. 
-                   ?type rdfs:subClassOf :Ball. MINUS{ VALUES (?type) { (:Ball)}}}`,
+           WHERE { ?c a :Next` + dir + `.  
+                   ?c a ?type.  
+                  {?type rdfs:subClassOf :Ball} 
+                  UNION {?type rdfs:subClassOf :Combination} 
+                  MINUS{ VALUES (?type) { (:Ball) (:Combination)}}}`,
           "application/sparql-results+json",
           {
             reasoning: true,
@@ -183,36 +181,11 @@ export default {
         )
         .then(({ body }) => {
           if (body.results.bindings.length > 0) {
-            this.next_ball_type = body.results.bindings[0].type.value.replace(
+            this.next_cell_type = body.results.bindings[0].type.value.replace(
               "http://www.semanticweb.org/djam/ontologies/2021/9/snowman#",
               ""
             );
-          } else this.next_ball_type = "na";
-        });
-    },
-    async isnext_cell_combination(dir) {
-      await query
-        .execute(
-          conn,
-          "proj_kr",
-          `SELECT ?type
-           WHERE { ?c a :Is` + dir + `. ?c :has` + dir + ` ?x. 
-                   ?x a ?type. 
-                   ?type rdfs:subClassOf :Combination. 
-                   ?type rdfs:subClassOf :Combination. MINUS{ VALUES (?type) { (:Combination)}}}`,
-          "application/sparql-results+json",
-          {
-            reasoning: true,
-          }
-        )
-        .then(({ body }) => {
-          if (body.results.bindings.length > 0) {
-            this.next_combination_type =
-              body.results.bindings[0].type.value.replace(
-                "http://www.semanticweb.org/djam/ontologies/2021/9/snowman#",
-                ""
-              );
-          } else this.next_combination_type = "na";
+          } else this.next_cell_type = "na";
         });
     },
     async get_player() {
