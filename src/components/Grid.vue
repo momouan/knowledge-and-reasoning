@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div id="home">
-      <p> 21/22 - Knowledge and Reasoning Project</p>
+      <p>21/22 - Knowledge and Reasoning Project</p>
       <h3>A Good Snowman Is Hard To Build</h3>
       <hr />
       <br />
@@ -30,11 +30,7 @@
     </table>
     <table id="game_grid">
       <tr v-for="(i, ind1) in 10" :key="`i-${ind1}`" :id="`${i - 1}`">
-        <td
-          v-for="(j, ind2) in 10"
-          :key="`j-${ind2}`"
-          :id="`${i - 1}${ind2}`"
-        ></td>
+        <td v-for="(j, ind2) in 10" :key="`j-${ind2}`" :id="`${i - 1}${ind2}`"></td>
       </tr>
     </table>
   </div>
@@ -67,6 +63,7 @@ export default {
   props: {},
   computed: {},
   methods: {
+    // clears the grid and initializes (or gets) the player's, balls' and combination's positions.
     async init() {
       this.clear_grid();
       await this.get_player();
@@ -85,10 +82,12 @@ export default {
       else 
         await this.get_balls();
     },
+    // updates the grid
     async update_grid() {
       this.clear_grid();
       await this.init();
     },
+    // clears the grid
     clear_grid() {
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
@@ -96,7 +95,9 @@ export default {
         }
       }
     },
+    // restores the initial player and balls positions
     async re_init() {
+      // query to delete whatever it is that's on the grid
       await query.execute(
         conn,
         "proj_kr",
@@ -107,6 +108,7 @@ export default {
           reasoning: true,
         }
       );
+      // query to restore the initial positions
       await query.execute(
         conn,
         "proj_kr",
@@ -120,6 +122,7 @@ export default {
       this.combination = [];
       await this.update_grid();
     },
+    // contains the move query
     async move(dir) {
       await query.execute(
         conn,
@@ -146,6 +149,8 @@ export default {
         this.re_init();
       }
     },
+    // decide whether to move or not
+    // depending on the cell ahead of the player
     async move_or_not(dir) {
       await this.is_combination(dir);
       if (this.cap_move) {
@@ -159,10 +164,10 @@ export default {
         )
           this.dont_move();
         else this.move(dir);
-      } else {
-        this.dont_move();
-      }
+      } 
+      else this.dont_move();
     },
+    // get the type of the cell(i+2) in a certain direction
     async isnext_cell_type(dir) {
       await query
         .execute(
@@ -189,6 +194,7 @@ export default {
           } else this.next_cell_type = "na";
         });
     },
+    // get player's position
     async get_player() {
       await query
         .execute(
@@ -217,6 +223,7 @@ export default {
       this.get_medium();
       this.get_big();
     },
+    // get the ball type from the cell next to the player in a certain direction
     async get_ball_type(dir) {
       await query
         .execute(
@@ -240,6 +247,7 @@ export default {
           else this.ball_type = "na";
         });
     },
+    // get small ball's position
     get_small() {
       query
         .execute(
@@ -263,6 +271,7 @@ export default {
           document.getElementById(this.small).appendChild(img);
         });
     },
+    // get medium ball's position
     get_medium() {
       query
         .execute(
@@ -286,6 +295,7 @@ export default {
           document.getElementById(this.medium).appendChild(img);
         });
     },
+    // get big ball's position
     get_big() {
       query
         .execute(
@@ -309,13 +319,14 @@ export default {
           document.getElementById(this.big).appendChild(img);
         });
     },
+    // Check if a cell contains two types of balls and push the types in the combination array
     async check_combination(dir) {
       if (this.combination.length == 0) {
         await query
           .execute(
             conn,
             "proj_kr",
-            `SELECT ?type 
+           `SELECT ?type 
             WHERE { ?c a :Is` + dir +`. ?c a ?type. 
                     ?type rdfs:subClassOf :Ball. MINUS{ VALUES (?type) { (:Ball) }}}`,
             "application/sparql-results+json",
@@ -367,6 +378,8 @@ export default {
           });
       }
     },
+    // make the combination if it exists, test on the combination array 
+    // and then query over the database to delete and insert the corresponding data
     async make_combination(dir) {
       if (this.combination.length == 2) {
         await query.execute(
@@ -394,6 +407,7 @@ export default {
         );
       }
     },
+    // get combination's position
     async get_combination() {
       await query
         .execute(
@@ -440,6 +454,7 @@ export default {
         });
     },
     async dont_move() {},
+    //check whether next cell is a combination
     async is_combination(dir) {
       await query
         .execute(

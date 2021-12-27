@@ -1,12 +1,9 @@
 <template>
-   <!-- <img alt="Vue logo" src="./assets/player.png">  -->
-  <!-- <Grid msg="Welcome to Your Vue.js App"/> -->
   <Grid/>
 </template>
 
 <script>
 import Grid from './components/Grid.vue'
-
 export default {
   name: 'App',
   components: {
@@ -22,6 +19,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px; */
 }
 </style>
