@@ -1,10 +1,11 @@
 <template>
   <div class="container">
     <div id="home">
+      <br>
       <p>21/22 - Knowledge and Reasoning Project</p>
       <h3>A Good Snowman Is Hard To Build</h3>
-      <hr />
-      <br />
+      <hr>
+      <br>
     </div>
     <table id="controls">
       <tr>
@@ -27,6 +28,12 @@
         <td><button id="down" @click="move_or_not('South')">Down</button></td>
         <td></td>
       </tr>
+      <br>
+      <tr>
+        <td></td>
+        <td v-if="loading"><p style="font-size: 22px">Loading...</p></td>
+        <td></td>
+      </tr>
     </table>
     <table id="game_grid">
       <tr v-for="(i, ind1) in 10" :key="`i-${ind1}`" :id="`${i - 1}`">
@@ -41,6 +48,7 @@ export default {
   name: "Grid",
   data() {
     return {
+      loading: false,
       ball_type: "",
       combination: [],
       next_cell_type: "",
@@ -144,6 +152,7 @@ export default {
       );
       await this.check_combination(dir);
       await this.update_grid();
+      this.loading = false
       if (this.combination.length == 3) {
         alert("game completed, click 'OK' to play again!");
         this.re_init();
@@ -152,6 +161,7 @@ export default {
     // decide whether to move or not
     // depending on the cell ahead of the player
     async move_or_not(dir) {
+      this.loading = true
       await this.is_combination(dir);
       if (this.cap_move) {
         await this.get_ball_type(dir);
@@ -453,7 +463,9 @@ export default {
           }
         });
     },
-    async dont_move() {},
+    async dont_move() {
+      this.loading = false
+    },
     //check whether next cell is a combination
     async is_combination(dir) {
       await query
