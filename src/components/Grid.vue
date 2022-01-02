@@ -499,7 +499,7 @@ const conn = new Connection({
 }
 #controls {
   float: left;
-  margin-top: 300px;
+  margin-top: 200px;
 }
 #small {
   width: 40px;
